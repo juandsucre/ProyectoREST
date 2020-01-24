@@ -28,7 +28,7 @@ public class EnviosREST {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path(" ds/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Envios read(@PathParam("id") Integer id) {
 		return envioDAO.getById(id);

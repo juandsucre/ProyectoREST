@@ -3,6 +3,8 @@ package entities;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -84,6 +86,7 @@ public class Clientes implements java.io.Serializable {
 		this.direccionFacturacion = direccionFacturacion;
 	}
 	@Transient
+	@JsonbTransient
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "clientes")
 	public Set<Envios> getEnvioses() {
 		return this.envioses;
