@@ -3,10 +3,13 @@ package dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.naming.NamingException;
+
 import org.hibernate.query.Query;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import entities.Clientes;
 import util.HibernateUtil;
@@ -25,7 +28,7 @@ public class ClientesDAO {
 			sesion = sesFactory.openSession();//se abre una sesion con el seFactory
 			sesion.save(cli);
 			res = cli;
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			System.err.println("Error en add Cliente: "+ex.getMessage());
 		}finally {
 			sesion.close();//se cierra esta conexion
@@ -33,11 +36,15 @@ public class ClientesDAO {
 		return res;
 	}
 	
-	public Clientes delete(Clientes cli) {
+	public Clientes delete(Clientes cliente){
 		Clientes result = null;
-		Serializable id;
+		Transaction tx = null;
 		try {
-			sesion.delete(cli);
+			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
+			sesion.delete(cliente);
+			tx.commit();
+			result = cliente;
 		} catch (HibernateException ex) {
 			System.out.println("Error al dar de alta al cliente" + ex.getMessage());
 		}finally {
@@ -48,9 +55,13 @@ public class ClientesDAO {
 
 	public Clientes update(Clientes cli) {
 		Clientes res = null;
+		Transaction tx = null;
 		try {
 			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
 			sesion.update(cli);
+			tx.commit();
+			res = cli;
 		} catch (HibernateException ex) {
 			System.out.println("Error al modificar el cliente" + ex.getMessage());
 		}finally {
@@ -65,7 +76,7 @@ public class ClientesDAO {
 			sesion = sesFactory.openSession();//se abre una sesion con el sesFactory
 			res = sesion.get(Clientes.class, id);
 			sesion.close();//se cierra esta conexion
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			System.err.println("Error GetById: "+ex.getMessage());
 		}
 		return res;

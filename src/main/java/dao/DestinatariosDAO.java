@@ -2,9 +2,12 @@ package dao;
 
 import java.util.ArrayList;
 
+import javax.validation.ConstraintViolationException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import entities.Destinatarios;
@@ -33,11 +36,17 @@ public class DestinatariosDAO {
 	
 	public Destinatarios delete(Destinatarios des) {
 		Destinatarios destino = null;
+		Transaction tx = null;
 		try {
 			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
 			sesion.delete(des);
+			tx.commit();
+			destino = des;
 		} catch (HibernateException ex) {
 			System.err.println("Error en delete Destinatario: "+ex.getMessage());
+		}catch (ConstraintViolationException ex) {
+			System.out.println("NO SE PUEDE ELIMINAR, TIENE ENVIOS...");
 		}finally {
 			sesion.close();//se cierra esta conexion
 		}
@@ -46,9 +55,13 @@ public class DestinatariosDAO {
 	
 	public Destinatarios update(Destinatarios des) {
 		Destinatarios destino = null;
+		Transaction tx = null;
 		try {
 			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
 			sesion.update(des);
+			tx.commit();
+			destino = des;
 		} catch (HibernateException ex) {
 			System.err.println("Error en update Destinatario: "+ex.getMessage());
 		}finally {

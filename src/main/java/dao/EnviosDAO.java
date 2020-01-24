@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import entities.Envios;
@@ -33,8 +34,13 @@ public class EnviosDAO {
 	
 	public Envios delete(Envios env) {
 		Envios result = null;
+		Transaction tx = null;
 		try {
+			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
 			sesion.delete(env);
+			tx.commit();
+			result = env;
 		} catch (HibernateException ex) {
 			System.out.println("Error en delete Envio" + ex.getMessage());
 		}finally {
@@ -45,9 +51,13 @@ public class EnviosDAO {
 	
 	public Envios update(Envios env) {
 		Envios res = null;
+		Transaction tx = null;
 		try {
 			sesion = sesFactory.openSession();
+			tx = sesion.beginTransaction();
 			sesion.update(env);
+			tx.commit();
+			res = env;
 		} catch (HibernateException ex) {
 			System.out.println("Error al modificar el envio" + ex.getMessage());
 		}finally {
@@ -61,7 +71,7 @@ public class EnviosDAO {
 		try {
 			sesion = sesFactory.openSession();
 			res = sesion.get(Envios.class, id);
-		} catch (Exception ex) {
+		} catch (HibernateException ex) {
 			System.err.println("Error GetById: "+ex.getMessage());
 		}finally {
 			sesion.close();

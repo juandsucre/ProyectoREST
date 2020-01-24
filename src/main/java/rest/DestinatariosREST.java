@@ -16,10 +16,12 @@ import javax.ws.rs.core.Response;
 import dao.DestinatariosDAO;
 import entities.Destinatarios;
 
+@Path("destinatarios")
 public class DestinatariosREST {
 	DestinatariosDAO destinatarioDAO = new DestinatariosDAO();
 	
 	@GET//este metodo saca una lista json con todos los destinatarios
+	@Path("get")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Destinatarios> getAll(){
 		return destinatarioDAO.getAll();
@@ -42,8 +44,8 @@ public class DestinatariosREST {
 	}
 	
 	@DELETE//este metodo elimina un destino
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("delete")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Destinatarios delete(Destinatarios destinatario) {
 		Destinatarios res = null;
 		res = destinatarioDAO.delete(destinatario);
@@ -51,7 +53,7 @@ public class DestinatariosREST {
 	}
 	
 	@PUT//este metodo modifica un destino
-	@Path("/{id}")
+	@Path("update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Destinatarios update(Destinatarios destinatario) {

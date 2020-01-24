@@ -24,6 +24,7 @@ public class ClientesREST {
 	ClientesDAO clienteDAO = new ClientesDAO();
 	
 	@GET//este metodo saca una lista json con todos los clientes
+	@Path("get")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Clientes> getAll(){
 		return clienteDAO.getAll();
@@ -37,6 +38,7 @@ public class ClientesREST {
 	}
 	
 	@POST
+	@Path("add")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Clientes read(Clientes cliente) {
@@ -45,17 +47,17 @@ public class ClientesREST {
 		return res;
 	}
 	
-	@DELETE//este metodo elimina un cliente
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Clientes delete(Clientes cliente) {
+	@DELETE //este metodo elimina un cliente
+	@Path("delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Clientes delete(Clientes cli) {
 		Clientes res;
-		res = clienteDAO.delete(cliente);
+		res = clienteDAO.delete(cli);
 		return res;
 	}
 
 	@PUT//este metodo modifica un cliente
-	@Path("/{id}")
+	//@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Clientes update(Clientes cliente) {

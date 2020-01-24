@@ -21,6 +21,7 @@ public class EnviosREST {
 	EnviosDAO envioDAO = new EnviosDAO();
 	
 	@GET
+	@Path("get")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Envios> getAll(){
 		return envioDAO.getAll();
@@ -43,8 +44,8 @@ public class EnviosREST {
 	}
 	
 	@DELETE
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("delete")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Envios delete(Envios env) {
 		Envios res;
 		res = envioDAO.delete(env);
@@ -52,7 +53,7 @@ public class EnviosREST {
 	}
 	
 	@PUT
-	@Path("/{id}")
+	@Path("update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Envios update(Envios env){
